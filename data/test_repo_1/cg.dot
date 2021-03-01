@@ -1,0 +1,4 @@
+digraph test_repo_1 {
+	A -> B -> C -> D ;
+	     B -> G -> D ;
+}
