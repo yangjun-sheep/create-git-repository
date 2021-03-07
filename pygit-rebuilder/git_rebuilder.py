@@ -28,14 +28,13 @@ def create_test_repo(src_dir, dest_dir):
     commit_infos = {}
     sorted_commits = top_sort(g_next, in_degree_map)
     repo = None
-    feature_id = 1
     for idx, commit in enumerate(sorted_commits):
         branch_name = None
         commit_msg = commit
         pathspecs = [commit]
         if idx == 0:
             repo = pygit2.init_repository(dest_dir)
-            branch_name = 'master'
+            branch_name = commit
             repo.index.add_all(pathspecs)
             repo.index.write()
             tree = repo.index.write_tree()
@@ -51,8 +50,7 @@ def create_test_repo(src_dir, dest_dir):
                 i = g_next[previous_commit].index(commit)
                 if i > 0:
                     # new branch
-                    branch_name = 'feature-{}'.format(feature_id)
-                    feature_id += 1
+                    branch_name = commit
                     new_branch = repo.branches.local.create(branch_name, repo[previous_commit_id])
                     repo.checkout(new_branch)
                 repo.index.add_all(pathspecs)
